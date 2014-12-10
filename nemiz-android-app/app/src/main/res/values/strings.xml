@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="facebookAppId">1543281519245250</string>
+    <string name="app_name">Nemīz!</string>
+
+    <string name="title_activity_login">Pieslēgties</string>
+    <string name="title_activity_register">Reģistrēties</string>
+
+    <string name="action_search">Meklēt</string>
+    <string name="action_share">Nosūtīt draugiem</string>
+
+    <string name="access_token_error">Neizdevās pievienoties serverim</string>
+    <string name="play_services_error">Lai aplikācija darbotos ir nepieciešama Google Play aplikācija</string>
+    <string name="password_required">Ievadiet paroli</string>
+    <string name="password_confirm_required">Apstipriniet ievadīto paroli</string>
+    <string name="password_no_match">Ievadītā parole neatbilst apstiprinātai parolei</string>
+    <string name="register_failed">Reģistrācija neizdevās</string>
+    <string name="login_failed">Nepareizs lietotāja vārds vai parole</string>
+    <string name="data_failed">Neizdevās atjaunot datus</string>
+
+    <string name="tab_friends">Draugi</string>
+    <string name="tab_activity">Aktivitāte</string>
+
+    <string name="hint_name">Tavs vārds</string>
+    <string name="hint_email">E-pasta adrese</string>
+    <string name="hint_password">Parole</string>
+    <string name="hint_password_confirm">Apstiprināt paroli</string>
+    <string name="hint_personal_message">Papildus informācija</string>
+
+    <string name="btn_login">Pieteikties</string>
+    <string name="btn_register">Pabeigt reģistrāciju</string>
+
+    <string name="txt_login_existing">Pieteikties ar esošu Nemīz kontu:</string>
+    <string name="txt_register_title">Izviedot jaunu Nemīz! kontu:</string>
+    <string name="txt_login_facebook">Lai izveidotu jaunu Nemīz! kontu ir jāreģistrējas caur Facebook.</string>
+    <string name="txt_register_loading">Tavs Nemīz! konts tiek veidots...</string>
+    <string name="txt_notification_title">Nemīz draugs!</string>
+    <string name="txt_notification_text">%1$s tevi uzmundrina ar nelielu nemīz!</string>
+    <string name="txt_no_friends">Neviens no taviem draugiem nelieto Nemīz aplikāciju. Iesaki Nemīz saviem Facebook draugiem un tavs draugu loks paplašināsies.</string>
+    <string name="txt_no_activity">Pagaidām nav aktivitātes. Esi pirmais! Nosūti draugam Nemīz, uzspiežot uz vārda, draugu sadaļā!</string>
+    <string name="txt_share">Pievienojies nemīzējiem, instalējot aplikāciju - http://nemiz.co</string>
+
+    <string name="txt_send_1"><![CDATA[Tu motivē <strong>%1$s</strong> ar nelielu nemīz!]]></string>
+    <string name="txt_send_2"><![CDATA[Tu uzmundrini <strong>%1$s</strong>! Viss būs labi. Nemīz!]]></string>
+    <string name="txt_send_3"><![CDATA[Tu domā, ka <strong>%1$s</strong> pārāk mīž! Nemīz!]]></string>
+
+    <string name="txt_receive_1"><![CDATA[<strong>%1$s</strong> tevi uzmundrina! Nemīz!]]></string>
+    <string name="txt_receive_2"><![CDATA[<strong>%1$s</strong> uzsauc Nemīz!]]></string>
+    <string name="txt_receive_3"><![CDATA[<strong>%1$s</strong> saka, lai Tu beidz mīzt!]]></string>
+</resources>

@@ -1,0 +1,61 @@
+parameters:
+  platform.entity.user.class: Nemiz\NemizBundle\Entity\User
+  platform.user.provider.class: Nemiz\NemizBundle\Provider\UserProvider
+  platform.user.service.class: Nemiz\NemizBundle\Service\UserService
+  platform.friend.service.class: Nemiz\NemizBundle\Service\FriendService
+  platform.client.service.class: Nemiz\NemizBundle\Service\ClientService
+  platform.activity.service.class: Nemiz\NemizBundle\Service\ActivityService  
+  
+  aws.platform_arn: 'arn:aws:sns:eu-central-1:852012476443:app/GCM/Nemiz'
+  aws.sns.client.class: Aws\Sns\SnsClient
+  aws.config:
+    key: 'AKIAJKIYLZLEW4ZRXW4A'
+    secret: '%aws_secret_key%'
+    region: 'eu-central-1'
+  
+services:
+  aws.sns.service: 
+    class: '%aws.sns.client.class%'
+    factory: [Aws\Sns\SnsClient, 'factory']
+    arguments: ['%aws.config%']
+    
+  platform.user.manager:
+    class: Doctrine\ORM\EntityManager
+    factory_service: doctrine 
+    factory_method: getManagerForClass
+    arguments: ['%platform.entity.user.class%']
+
+  platform.user.repository: 
+   class: Nemiz\NemizBundle\Repository\UserRepository
+   factory_service: platform.user.manager
+   factory_method: getRepository
+   arguments: ['%platform.entity.user.class%']
+
+  platform.user.provider:
+    class: '%platform.user.provider.class%'
+    arguments: ['@platform.user.repository']
+  
+  platform.client.service:
+    class: '%platform.client.service.class%'
+    arguments: ['@doctrine.orm.entity_manager', '@fos_oauth_server.client_manager.default', '@aws.sns.service', '%aws.platform_arn%', '@logger']
+    tags: 
+      - { name: monolog.logger, channel: nemiz }  
+  
+  platform.user.service:
+    class: '%platform.user.service.class%'
+    arguments: ['@doctrine.orm.entity_manager', '@security.encoder_factory', '@platform.client.service', '@logger']
+    tags: 
+      - { name: monolog.logger, channel: nemiz }
+      
+  platform.friend.service:
+    class: '%platform.friend.service.class%'
+    arguments: ['@doctrine.orm.entity_manager', '@aws.sns.service', '@jms_serializer', '@logger']
+    tags: 
+      - { name: monolog.logger, channel: nemiz }      
+   
+  platform.activity.service:
+    class: '%platform.activity.service.class%'
+    arguments: ['@doctrine.orm.entity_manager', '@logger']
+    tags: 
+      - { name: monolog.logger, channel: nemiz }    
+   

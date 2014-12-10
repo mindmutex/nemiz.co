@@ -1,0 +1,35 @@
+security:
+  encoders:
+    Nemiz\NemizBundle\Entity\User:
+      algorithm: bcrypt
+      cost: 15
+      
+  providers:
+    user_provider:
+      id: platform.user.provider
+      
+  firewalls:
+    dev:
+      pattern: ^/(_(profiler|wdt)|css|images|js)/
+      security: false
+
+    login:
+      pattern: ^/login
+      security: false
+    oauth_token:
+      pattern: ^/oauth/v2/token
+      security: false
+    oauth_authorize:
+      pattern: ^/oauth/v2/auth
+      form_login: 
+        provider: user_provider
+        check_path: _security_check
+        login_path: _demo_login
+      anonymous: true
+    api:
+      pattern: ^/api
+      fos_oauth: true
+      stateless: true
+      
+  access_control:
+     - { path: ^/api, roles: [IS_AUTHENTICATED_FULLY]}      

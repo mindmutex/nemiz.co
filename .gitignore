@@ -1,0 +1,11 @@
+/nemiz-server/src/Nemiz/NemizBundle/Resources/public/vendor/
+/nemiz-server/web/audio/
+
+.DS_Store
+._.DS_Store
+.settings/
+.idea/
+.buildpath
+.project
+*.apk
+*.iml

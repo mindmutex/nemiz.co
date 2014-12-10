@@ -1,0 +1,110 @@
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    android:background="@color/background">
+
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:tools="http://schemas.android.com/tools"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:orientation="vertical"
+        android:paddingLeft="@dimen/activity_horizontal_margin"
+        android:paddingRight="@dimen/activity_horizontal_margin"
+        android:paddingTop="@dimen/activity_vertical_margin"
+        android:paddingBottom="@dimen/activity_vertical_margin">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/nemiz"
+            android:layout_gravity="center_horizontal" android:layout_marginBottom="10dp" />
+
+        <LinearLayout
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:background="@drawable/form_background"
+            android:padding="15dp"
+            android:id="@+id/layoutForm">
+
+            <TextView
+                android:layout_width="fill_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:text="@string/txt_register_title"
+                android:textStyle="bold"
+                android:padding="5dp"
+                android:layout_marginBottom="10dp" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPersonName"
+                android:hint="@string/hint_name"
+                android:enabled="false"
+                android:ems="10"
+                android:id="@+id/txtName" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textEmailAddress"
+                android:hint="@string/hint_email"
+                android:enabled="false"
+                android:ems="10"
+                android:id="@+id/txtEmail" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/hint_password"
+                android:ems="10"
+                android:layout_marginTop="10dp"
+                android:id="@+id/txtPassword" />
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:inputType="textPassword"
+                android:hint="@string/hint_password_confirm"
+                android:ems="10"
+                android:id="@+id/txtPasswordConfirm" />
+
+            <Button
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/btn_register"
+                android:id="@+id/btnRegister"
+                android:layout_gravity="right" />
+        </LinearLayout>
+
+        <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:tools="http://schemas.android.com/tools"
+            android:id="@+id/layoutRegister"
+            android:layout_width="fill_parent"
+            android:layout_height="match_parent"
+            android:paddingLeft="@dimen/activity_horizontal_margin"
+            android:paddingRight="@dimen/activity_horizontal_margin"
+            android:paddingTop="@dimen/activity_vertical_margin"
+            android:paddingBottom="@dimen/activity_vertical_margin"
+            android:visibility="gone"
+            android:orientation="vertical">
+            <ProgressBar
+                style="?android:attr/progressBarStyleLarge"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/progressBar2"
+                android:layout_gravity="center_horizontal" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/txt_register_loading"
+                android:id="@+id/textView3"
+                android:layout_gravity="center_horizontal" />
+        </LinearLayout>
+    </LinearLayout>
+
+</ScrollView>
