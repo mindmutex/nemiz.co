@@ -9,3 +9,5 @@
 .project
 *.apk
 *.iml
+.environment/
+.elasticbeanstalk/

@@ -15,6 +15,7 @@ import com.loopj.android.http.TextHttpResponseHandler;
 
 import org.apache.http.Header;
 import org.apache.http.entity.StringEntity;
+import org.apache.http.protocol.HTTP;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -36,7 +37,9 @@ import co.nemiz.domain.User;
 public class DefaultRestService {
     private static final String TAG = DefaultRestService.class.getSimpleName();
 
-    private static final String BASE_URL = "http://192.168.1.102:8000";
+    private static final String BASE_URL = "http://54.93.34.31";
+    private static final String AUDIO_URL = "http://a.nemiz.co";
+
     private static final String PASSWORD_GRANT_CLIENT_ID = "2_6644h3uhl2scog4088kwso8kgscgg4g4w4wwssowgkc84g8ggw";
 
     private static DefaultRestService singletonInstance;
@@ -61,6 +64,9 @@ public class DefaultRestService {
     }
 
     public static String absoluteUrl(String relativeUrl) {
+        if (relativeUrl.startsWith("http://") || relativeUrl.startsWith("https://")) {
+            return relativeUrl;
+        }
         return BASE_URL + relativeUrl;
     }
 
@@ -74,7 +80,7 @@ public class DefaultRestService {
     }
 
     public static RequestHandle get(String path, RequestParams params, ResponseHandlerInterface responseHandlerInterface) {
-        asyncHttpClient.addHeader("Content-Type", "application/json");
+        asyncHttpClient.addHeader("Content-Type", "application/json; charset=utf-8");
         if (hasAccessToken()) {
             asyncHttpClient.addHeader("Authorization", "Bearer " + accessToken);
         }
@@ -114,13 +120,14 @@ public class DefaultRestService {
     private static RequestHandle internalPost(AsyncHttpClient client,
             String path, Object requestBody, ResponseHandlerInterface responseHandlerInterface) {
 
-        client.addHeader("Content-Type", "application/json");
+        client.addHeader("Content-Type", "application/json; charset=utf-8");
         if (hasAccessToken()) {
             client.addHeader("Authorization", "Bearer " + accessToken);
         }
         try {
             return client.post(null, absoluteUrl(path),
-                    new StringEntity(gson.toJson(requestBody)),
+                    new StringEntity(gson.toJson(requestBody), HTTP.UTF_8),
+
                     "application/json", responseHandlerInterface);
         } catch (UnsupportedEncodingException e) {
             responseHandlerInterface.sendFailureMessage(500, null, null, e);
@@ -283,6 +290,6 @@ public class DefaultRestService {
     // Retrieve Audio defintiions
 
     public RequestHandle getAudioDefinition(Result<AudioDefinition> resultHandler) {
-        return get("/audio/audio.json", null, AudioDefinition.class, resultHandler);
+        return get(AUDIO_URL, null, AudioDefinition.class, resultHandler);
     }
 }

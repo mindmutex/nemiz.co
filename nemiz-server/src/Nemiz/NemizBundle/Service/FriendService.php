@@ -8,6 +8,7 @@ use Monolog\Logger;
 use Nemiz\NemizBundle\Entity\Friendship;
 use Nemiz\NemizBundle\Repository\FriendshipRepository;
 use JMS\Serializer\SerializationContext;
+use Nemiz\NemizBundle\Repository\UserRepository;
 
 class FriendService {
 	
@@ -76,7 +77,7 @@ class FriendService {
 	}
 	
 	public function joinWithFacebook(User $user, $friends = array()) {
-		$repository = $this->entityManager->getRepository(UserService::ENTITY);
+		$repository = $this->entityManager->getRepository(UserRepository::ENTITY);
 		if (!empty($friends)) {
 			$builder = $repository->createQueryBuilder('u');
 			$query = $builder->add('where', $builder->expr()->in('u.facebook', $friends))->getQuery();

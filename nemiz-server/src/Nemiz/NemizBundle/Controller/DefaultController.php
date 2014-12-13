@@ -18,8 +18,7 @@ class DefaultController extends Controller {
 	/**
 	 * @Route("/")
 	 */
-	public function indexAction() {
-		$this->get('aws.sns.service');
+	public function indexAction(Request $request) {
 		return $this->render ('NemizBundle:Default:index.html.twig');
 	}
 	
@@ -30,6 +29,7 @@ class DefaultController extends Controller {
 	public function registerAction(Request $request) {
 		$serializer = $this->get('jms_serializer');
 		$content = $request->getContent(); 
+		
 		$register = $serializer->deserialize(
 			$content, get_class(new Registration()), 'json');
 		
