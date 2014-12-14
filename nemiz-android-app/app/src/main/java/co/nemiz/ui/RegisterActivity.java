@@ -135,7 +135,7 @@ public class RegisterActivity extends Activity {
         toggleRegistrationMode(true);
 
         DefaultRestService service = DefaultRestService.get();
-        service.register(registrationRequest, new DefaultRestService.Result<Client>() {
+        service.register(registrationRequest, new DefaultRestService.BaseResult<Client>() {
             @Override
             public void handle(int statusCode, Client result, String stringResult) {
                 if (result != null) {

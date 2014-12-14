@@ -160,6 +160,11 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
                 }
                 clearRefreshing();
             }
+
+            @Override
+            public void retry(int attempt) {
+                updateContacts();
+            }
         });
     }
 

@@ -131,9 +131,7 @@ public class AudioManager {
         }
 
         Audio audio = definition.getFiles().get(random.nextInt(getCount()));
-        if (audioExists(audio)) {
-            return Uri.fromFile(getAudioFile(audio));
-        } else {
+        if (!audioExists(audio)) {
             File cache = getAudioFile(audio);
             cache.setReadable(true, false);
 
@@ -142,7 +140,6 @@ public class AudioManager {
                 FileOutputStream outputStream = null;
                 try {
                     outputStream = context.openFileOutput(FilenameUtils.getName(audio.getName()), Context.MODE_WORLD_READABLE);
-
                     IOUtils.copy(url.openStream(), outputStream);
                 } catch (Exception e) {
                     Log.e(TAG, "Failed to open output stream for cache file", e);
@@ -157,7 +154,7 @@ public class AudioManager {
             } catch (IOException e) {
                 e.printStackTrace();
             }
-            return Uri.fromFile(getAudioFile(audio));
         }
+        return Uri.fromFile(getAudioFile(audio));
     }
 }

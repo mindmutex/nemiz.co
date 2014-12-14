@@ -1,11 +1,13 @@
 package co.nemiz.ui;
 
 import android.content.Context;
+import android.content.Intent;
 import android.content.res.Resources;
 import android.os.Bundle;
 import android.support.v4.app.ListFragment;
 import android.support.v4.widget.SwipeRefreshLayout;
 import android.text.Html;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -56,6 +58,14 @@ public class ActivityFragment extends ListFragment  implements SwipeRefreshLayou
     }
 
     @Override
+    public void onResume() {
+        onRefresh();
+
+        super.onResume();
+    }
+
+
+    @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_activity, container, false);
 
@@ -65,7 +75,7 @@ public class ActivityFragment extends ListFragment  implements SwipeRefreshLayou
         return view;
     }
 
-    private void updateActivity(Long offset) {
+    private void updateActivity(final Long offset) {
         if (emptySwipeLayout.isShown()) {
             emptySwipeLayout.setRefreshing(true);
         }
@@ -84,6 +94,11 @@ public class ActivityFragment extends ListFragment  implements SwipeRefreshLayou
                     Toast.makeText(getActivity(), R.string.data_failed, Toast.LENGTH_LONG).show();
                 }
                 clearRefreshing();
+            }
+
+            @Override
+            public void retry(int attempt) {
+                updateActivity(offset);
             }
         });
     }

@@ -35,7 +35,7 @@
     <string name="txt_login_facebook">Lai izveidotu jaunu Nemīz! kontu ir jāreģistrējas caur Facebook.</string>
     <string name="txt_register_loading">Tavs Nemīz! konts tiek veidots...</string>
     <string name="txt_notification_title">Nemīz draugs!</string>
-    <string name="txt_notification_text">%1$s tevi uzmundrina ar nelielu nemīz!</string>
+    <string name="txt_notification_text">%1$s tevi uzmundrina!</string>
     <string name="txt_no_friends">Neviens no taviem draugiem nelieto Nemīz aplikāciju. Iesaki Nemīz saviem Facebook draugiem un tavs draugu loks paplašināsies.</string>
     <string name="txt_no_activity">Pagaidām nav aktivitātes. Esi pirmais! Nosūti draugam Nemīz, uzspiežot uz vārda, draugu sadaļā!</string>
     <string name="txt_share">Pievienojies nemīzējiem, instalējot aplikāciju - http://nemiz.co</string>

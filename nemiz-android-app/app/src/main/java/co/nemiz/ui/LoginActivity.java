@@ -83,12 +83,12 @@ public class LoginActivity extends Activity {
         loginButton.setEnabled(false);
 
         final DefaultRestService service = DefaultRestService.get();
-        service.login(username, password, new DefaultRestService.Result<String>() {
+        service.login(username, password, new DefaultRestService.BaseResult<String>() {
             @Override
             public void handle(int statusCode, String result, String stringResult) {
                 if (result != null) {
                     DefaultRestService.setAccessToken(result);
-                    service.createDevice(device, new DefaultRestService.Result<Client>() {
+                    service.createDevice(device, new DefaultRestService.BaseResult<Client>() {
                         @Override
                         public void handle(int statusCode, Client result, String stringResult) {
                             if (result != null) {

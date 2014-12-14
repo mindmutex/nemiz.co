@@ -32,7 +32,7 @@ import co.nemiz.auth.AccountUtils;
 import co.nemiz.dao.ApplicationContext;
 import co.nemiz.support.AsyncHttpRequestPool;
 
-public class MainActivity extends Activity {
+public class MainActivity extends Activity implements DefaultRestService.TokenRequestListener {
     private static final int PLAY_SERVICES_RESOLUTION_REQUEST = 9000;
     private static final String TAG = MainActivity.class.getCanonicalName();
 
@@ -41,9 +41,13 @@ public class MainActivity extends Activity {
      */
     private static final String SENDER_ID = "918488499724";
 
+    private Context context;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
+
         requestWindowFeature(Window.FEATURE_NO_TITLE);
 
         // initialise context to be accessible statically
@@ -63,7 +67,7 @@ public class MainActivity extends Activity {
                 // attempt to login if facebook session is not open.
                 startActivity(new Intent(this, LoginActivity.class));
             } else {
-                obtainAccessToken(accounts[0]);
+                obtainAccessTokenAndInitialize();
             }
         } else {
             handleFailure(R.string.play_services_error);
@@ -94,9 +98,11 @@ public class MainActivity extends Activity {
         return true;
     }
 
+    /**
+     * Initialize google cloud messaging.
+     */
     private void initializeGcmIfRequired() {
         final ApplicationContext appContext = ApplicationContext.get();
-        final Context context = this;
 
         if (appContext.getPushRegistrationId().isEmpty()) {
             AsyncTask<Void, String, String> asyncTask = new AsyncTask<Void, String, String>() {
@@ -124,34 +130,33 @@ public class MainActivity extends Activity {
         }
     }
 
-    private void obtainAccessToken(Account account) {
-        AccountManager accountManager = AccountManager.get(this);
+    /**
+     * Obtain access token and initialize content.
+     */
+    private void obtainAccessTokenAndInitialize() {
+        DefaultRestService.setTokenRequestListener(this);
         if (DefaultRestService.hasAccessToken()) {
             startActivity(new Intent(this, ContactsActivity.class));
         } else {
-            final Context context = this;
-            accountManager.getAuthToken(account, AccountUtils.AUTH_TOKEN_TYPE,
-                    null, this, new AccountManagerCallback<Bundle>() {
+            onTokenRequest(new DefaultRestService.BaseResult<String>() {
                 @Override
-                public void run(AccountManagerFuture<Bundle> bundleAccountManagerFuture) {
-                    try {
-                        Bundle result = bundleAccountManagerFuture.getResult();
-
-                        DefaultRestService.setAccessToken(result.getString(AccountManager.KEY_AUTHTOKEN));
-
+                public void handle(int statusCode, String result, String stringResult) {
+                    if (result != null) {
+                        DefaultRestService.setAccessToken(result);
                         initializeContent();
-                    } catch (Exception e) {
-                        Log.e(TAG, "Failed to authenticate", e);
+                    } else {
                         handleFailure(R.string.access_token_error);
                     }
                 }
-            }, null);
+            });
         }
     }
 
+    /**
+     * Initialize data. Wait for all requests to complete
+     * before continuing to contacts activity.
+     */
     private void initializeContent() {
-        final Context context = this;
-
         DefaultRestService service = DefaultRestService.get();
 
         AsyncHttpRequestPool requestPool = new AsyncHttpRequestPool();
@@ -161,8 +166,9 @@ public class MainActivity extends Activity {
                 startActivity(new Intent(context, ContactsActivity.class));
             }
         });
+
         requestPool.add(service.getContacts(null, new DefaultRestService.BaseResult<List<User>>()));
-        requestPool.add(service.getAudioDefinition(new DefaultRestService.Result<AudioDefinition>() {
+        requestPool.add(service.getAudioDefinition(new DefaultRestService.BaseResult<AudioDefinition>() {
             @Override
             public void handle(int statusCode, AudioDefinition result, String stringResult) {
                 AudioManager audioManager = AudioManager.get(context);
@@ -174,6 +180,31 @@ public class MainActivity extends Activity {
             requestPool.waitForAll(10000000);
         } catch (InterruptedException e) {
             Log.e(TAG, "Failed to initialize data");
+        }
+    }
+
+    @Override
+    public void onTokenRequest(final DefaultRestService.Result<String> resultHandler) {
+        AccountManager accountManager = AccountManager.get(this);
+        Account[] accounts = accountManager.getAccountsByType(AccountUtils.ACCOUNT_TYPE);
+        if (accounts.length != 0) {
+            Account account = accounts[0];
+            accountManager.getAuthToken(account, AccountUtils.AUTH_TOKEN_TYPE,
+                null, this, new AccountManagerCallback<Bundle>() {
+                    @Override
+                    public void run(AccountManagerFuture<Bundle> bundleAccountManagerFuture) {
+                        try {
+                            Bundle result = bundleAccountManagerFuture.getResult();
+                            resultHandler.handle(200, result.getString(AccountManager.KEY_AUTHTOKEN), null);
+
+                        } catch (Exception e) {
+                            Log.e(TAG, "Failed to authenticate", e);
+                            resultHandler.handle(403, null, e.getMessage());
+                        }
+                    }
+                }, null);
+        } else {
+            resultHandler.handle(404, null, "Account missing");
         }
     }
 }

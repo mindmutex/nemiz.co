@@ -29,6 +29,8 @@ public class GcmIntentService extends IntentService {
 
     private void sendNotification(String msg) {
         Intent intent = new Intent(this, MainActivity.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
+
         PendingIntent pendingIntent =
             PendingIntent.getActivity(this, 0, intent,0);
 
