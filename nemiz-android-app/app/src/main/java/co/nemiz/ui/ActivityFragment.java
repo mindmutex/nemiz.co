@@ -173,7 +173,7 @@ public class ActivityFragment extends ListFragment  implements SwipeRefreshLayou
 
 
             String messageText = resources.getString(resourceId, activity.isReceived()
-                ? activity.getFriend().getName() : activity.getUser().getName());
+                    ? activity.getUser().getName() : activity.getFriend().getName());
 
             text.setText(Html.fromHtml(messageText));
             date.setText(DateFormat.getDateTimeInstance().format(activity.getDateCreated()));

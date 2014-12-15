@@ -1,7 +1,6 @@
 package co.nemiz.gcm;
 
 import android.app.IntentService;
-import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.Context;
@@ -25,9 +24,9 @@ public class GcmIntentService extends IntentService {
 
     private int numberOfMessages = 0;
 
-    private NotificationManager notificationManager;
-
     private void sendNotification(String msg) {
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+
         Intent intent = new Intent(this, MainActivity.class);
         intent.setFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
 
@@ -42,20 +41,16 @@ public class GcmIntentService extends IntentService {
 
         NotificationCompat.Builder builder =
             new NotificationCompat.Builder(this)
+                    .setDefaults(NotificationCompat.FLAG_FOREGROUND_SERVICE)
                     .setSmallIcon(R.drawable.ic_launcher)
                     .setContentTitle(getString(R.string.txt_notification_title))
                     .setNumber(++numberOfMessages)
                     .setAutoCancel(true)
-                    .setSound(sound)
+                    .setSound(sound, android.media.AudioManager.STREAM_MUSIC)
                     .setContentText(getString(R.string.txt_notification_text, user.getName()))
                 .setContentIntent(pendingIntent);
 
-        Notification notification = builder.build();
-        if (notificationManager == null) {
-            notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        }
-
-        notificationManager.notify(user.getId().intValue(), notification);
+        notificationManager.notify(user.getId().intValue(), builder.build());
     }
 
     @Override

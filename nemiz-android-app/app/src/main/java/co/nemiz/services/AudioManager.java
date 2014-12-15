@@ -6,6 +6,8 @@ import android.net.Uri;
 import android.os.Environment;
 import android.util.Log;
 
+import com.google.gson.Gson;
+
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 
@@ -36,15 +38,64 @@ public class AudioManager {
     }
 
     private Random random = new Random();
-    private Context context;
+    private Gson gson = new Gson();
+
     private AudioDefinition definition;
+    private Context context;
 
     public AudioManager(Context context) {
         this.context = context;
+
+        // attempt to load the definition from cache.
+        attemptDefinitionLoad();
+    }
+
+    private File getRoot() {
+        return Environment.getExternalStoragePublicDirectory("Nemiz");
+    }
+
+    private File getAudioFile(Audio audio) {
+        return new File(getRoot(), FilenameUtils.getName(audio.getName()));
+    }
+
+    private File getAudioCacheFile(Audio audio) {
+        return new File(getRoot(), FilenameUtils.getName(audio.getName()) + ".md5");
     }
 
     public void setDefinition(AudioDefinition definition) {
         this.definition = definition;
+
+        // store the definition on filesystem
+        // otherwise when app is killed it doesn't know anything about
+        // the audio files
+        Gson gson = new Gson();
+        FileOutputStream outputStream = null;
+        try {
+            outputStream = new FileOutputStream(new File(getRoot(), "audio.json"));
+            IOUtils.write(gson.toJson(definition), outputStream);
+        } catch (IOException e) {
+        } finally {
+            IOUtils.closeQuietly(outputStream);
+        }
+    }
+
+    /**
+     * Loads audio definition from external storage.
+     */
+    private void attemptDefinitionLoad() {
+        if (definition == null) {
+            File definitionFile = new File(getRoot(), "audio.json");
+            if (definitionFile.exists()) {
+                FileInputStream inputStream = null;
+                try {
+                    inputStream = new FileInputStream(new File(getRoot(), "audio.json"));
+                    definition = gson.fromJson(IOUtils.toString(inputStream), AudioDefinition.class);
+                } catch (IOException e) {
+                } finally {
+                    IOUtils.closeQuietly(inputStream);
+                }
+            }
+        }
     }
 
     public int getCount() {
@@ -54,14 +105,13 @@ public class AudioManager {
         return 0;
     }
 
-    private File getAudioFile(Audio audio) {
-        return context.getFileStreamPath(FilenameUtils.getName(audio.getName()));
-    }
-
-    private File getAudioCacheFile(Audio audio) {
-        return context.getFileStreamPath(FilenameUtils.getName(audio.getName()) + ".md5");
-    }
-
+    /**
+     * Check if the audio file exists in external storage.
+     * The file name and the MD5 checksum must match.
+     *
+     * @param audio audio
+     * @return status
+     */
     private boolean audioExists(Audio audio) {
         File file = getAudioFile(audio);
         if (file.exists()) {
@@ -88,7 +138,13 @@ public class AudioManager {
         return false;
     }
 
-    private String getCacheMD5(File file) {
+    /**
+     * Generate MD5 checksum for a file.
+     *
+     * @param file file
+     * @return checksum
+     */
+    private String generateChecksum(File file) {
         InputStream inputStream = null;
         try {
             inputStream = new FileInputStream(file);
@@ -125,21 +181,27 @@ public class AudioManager {
         }
     }
 
+    /**
+     * Returns random audio file.
+     *
+     * @return uri to audio file.
+     */
     public Uri getRandomAudio() {
         if (definition == null) {
+            // returns default notification sound if no info about the audio is present.
             return RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         }
-
         Audio audio = definition.getFiles().get(random.nextInt(getCount()));
         if (!audioExists(audio)) {
             File cache = getAudioFile(audio);
-            cache.setReadable(true, false);
-
             try {
                 URL url = new URL(audio.getUrl());
                 FileOutputStream outputStream = null;
                 try {
-                    outputStream = context.openFileOutput(FilenameUtils.getName(audio.getName()), Context.MODE_WORLD_READABLE);
+                    if (cache.getParentFile() != null) {
+                        cache.getParentFile().mkdirs();
+                    }
+                    outputStream = new FileOutputStream(cache);
                     IOUtils.copy(url.openStream(), outputStream);
                 } catch (Exception e) {
                     Log.e(TAG, "Failed to open output stream for cache file", e);
@@ -147,7 +209,7 @@ public class AudioManager {
                     IOUtils.closeQuietly(outputStream);
                 }
 
-                String md5 = getCacheMD5(getAudioFile(audio));
+                String md5 = generateChecksum(cache);
                 if (md5.equals(audio.getMd5())) {
                     writeCacheMD5(getAudioCacheFile(audio), md5);
                 }
