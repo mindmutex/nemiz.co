@@ -40,7 +40,7 @@ public class DefaultRestService {
     /**
      * API endpoint URL.
      */
-    private static final String BASE_URL = "http://192.168.1.102:8000";
+    private static final String BASE_URL = "http://54.93.36.184";
 
     /**
      * URL where to find audio fles.

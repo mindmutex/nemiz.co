@@ -38,7 +38,7 @@ class ActivityController extends Controller {
 		
 		$temp = array();
 		foreach ($result as $activity) {
-			$activity->setReceived($activity->getUser()->getId() == $this->getUser()->getId());
+			$activity->setReceived($activity->getUser()->getId() != $this->getUser()->getId());
 		}
 		
 		$serializer = $this->get('jms_serializer');
