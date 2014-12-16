@@ -135,7 +135,7 @@ public class ActivityFragment extends ListFragment  implements SwipeRefreshLayou
             enable = firstItemVisible && topOfFirstItemVisible;
 
             if (firstVisibleItem + visibleItemCount == totalItemCount && totalItemCount != 0) {
-                Long offsetValue = Long.valueOf(activityList.size());
+                Long offsetValue = (long) activityList.size();
                 if (!offsetValue.equals(activityOffset)) {
                     activityOffset = offsetValue;
                     updateActivity(offsetValue);

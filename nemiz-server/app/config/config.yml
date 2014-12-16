@@ -2,7 +2,7 @@ imports:
     - { resource: parameters.yml }
     - { resource: security.yml }
     - { resource: services.yml }
-
+    - { resource: env.php }
 framework:
     #esi:             ~
     translator:      { fallback: "%locale%" }

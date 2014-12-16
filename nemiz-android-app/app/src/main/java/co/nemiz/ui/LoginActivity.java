@@ -51,9 +51,10 @@ public class LoginActivity extends Activity {
         uiHelper.onCreate(savedInstanceState);
 
         Session session = Session.getActiveSession();
-        if (session != null && (session.isOpened() || session.isClosed())) {
+        if (session != null && session.isOpened()) {
             onSessionStateChange(session);
         }
+
         LoginButton authButton = (LoginButton) findViewById(R.id.authButton);
         authButton.setReadPermissions(PERMISSIONS);
 
@@ -93,6 +94,8 @@ public class LoginActivity extends Activity {
                         public void handle(int statusCode, Client result, String stringResult) {
                             if (result != null) {
                                 AccountUtils.createAccount(context, username, password, result);
+                                DefaultRestService.setAccessToken(null);
+
                                 startActivity(new Intent(context, MainActivity.class));
                             } else {
                                 Toast.makeText(context,

@@ -22,6 +22,7 @@ public class GcmIntentService extends IntentService {
         super("GcmIntentService");
     }
 
+    private Gson gson = new Gson();
     private int numberOfMessages = 0;
 
     private void sendNotification(String msg) {
@@ -33,11 +34,10 @@ public class GcmIntentService extends IntentService {
         PendingIntent pendingIntent =
             PendingIntent.getActivity(this, 0, intent,0);
 
-        Gson gson = new Gson();
         User user = gson.fromJson(msg, User.class);
 
-        AudioManager audioManager = AudioManager.get(this);
-        Uri sound = audioManager.getRandomAudio(); // must be accessible by public
+        AudioManager audioManager = AudioManager.get();
+        Uri sound = audioManager.getRandomAudio(); // must be publicly accessible
 
         NotificationCompat.Builder builder =
             new NotificationCompat.Builder(this)

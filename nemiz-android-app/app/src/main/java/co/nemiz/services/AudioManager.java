@@ -1,6 +1,5 @@
 package co.nemiz.services;
 
-import android.content.Context;
 import android.media.RingtoneManager;
 import android.net.Uri;
 import android.os.Environment;
@@ -29,10 +28,9 @@ public class AudioManager {
     private final static String TAG = AudioManager.class.getSimpleName();
 
     private static AudioManager singletonInstance;
-
-    public static AudioManager get(Context context) {
+    public static AudioManager get() {
         if (singletonInstance == null) {
-            singletonInstance = new AudioManager(context);
+            singletonInstance = new AudioManager();
         }
         return singletonInstance;
     }
@@ -41,15 +39,16 @@ public class AudioManager {
     private Gson gson = new Gson();
 
     private AudioDefinition definition;
-    private Context context;
 
-    public AudioManager(Context context) {
-        this.context = context;
-
+    public AudioManager() {
         // attempt to load the definition from cache.
         attemptDefinitionLoad();
     }
 
+    /**
+     * Root folder where all files are being stored.
+     * @return file
+     */
     private File getRoot() {
         return Environment.getExternalStoragePublicDirectory("Nemiz");
     }
@@ -66,14 +65,15 @@ public class AudioManager {
         this.definition = definition;
 
         // store the definition on filesystem
-        // otherwise when app is killed it doesn't know anything about
-        // the audio files
+        // otherwise when app is killed it doesn't know anything about the audio files
+        // as the definition is stored in memory
         Gson gson = new Gson();
         FileOutputStream outputStream = null;
         try {
             outputStream = new FileOutputStream(new File(getRoot(), "audio.json"));
             IOUtils.write(gson.toJson(definition), outputStream);
         } catch (IOException e) {
+            Log.w(TAG, "Failed to write definition to filesystem", e);
         } finally {
             IOUtils.closeQuietly(outputStream);
         }
@@ -91,6 +91,7 @@ public class AudioManager {
                     inputStream = new FileInputStream(new File(getRoot(), "audio.json"));
                     definition = gson.fromJson(IOUtils.toString(inputStream), AudioDefinition.class);
                 } catch (IOException e) {
+                    Log.w(TAG, "Failed to read definition from filesystem", e);
                 } finally {
                     IOUtils.closeQuietly(inputStream);
                 }
@@ -164,11 +165,13 @@ public class AudioManager {
             }
             return buffer.toString();
         } catch (NoSuchAlgorithmException | IOException e) {
+            Log.w("Failed to generate checksum", e);
         } finally {
             IOUtils.closeQuietly(inputStream);
         }
         return "";
     }
+
 
     private void writeCacheMD5(File cache, String md5) {
         FileOutputStream outputStream = null;
@@ -176,6 +179,7 @@ public class AudioManager {
             outputStream = new FileOutputStream(cache);
             IOUtils.write(md5, outputStream);
         } catch (IOException e) {
+            Log.w(TAG, "Failed to write MD5 checksum to a file", e);
         } finally {
             IOUtils.closeQuietly(outputStream);
         }

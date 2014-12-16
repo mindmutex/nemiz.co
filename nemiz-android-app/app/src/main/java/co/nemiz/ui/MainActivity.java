@@ -171,7 +171,7 @@ public class MainActivity extends Activity implements DefaultRestService.TokenRe
         requestPool.add(service.getAudioDefinition(new DefaultRestService.BaseResult<AudioDefinition>() {
             @Override
             public void handle(int statusCode, AudioDefinition result, String stringResult) {
-                AudioManager audioManager = AudioManager.get(context);
+                AudioManager audioManager = AudioManager.get();
                 audioManager.setDefinition(result);
             }
         }));

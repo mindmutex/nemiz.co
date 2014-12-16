@@ -40,7 +40,7 @@ public class DefaultRestService {
     /**
      * API endpoint URL.
      */
-    private static final String BASE_URL = "http://54.93.36.184";
+    private static final String BASE_URL = "http://awseb-e-i-awsebloa-hkafkcdino1i-483734023.eu-central-1.elb.amazonaws.com";
 
     /**
      * URL where to find audio fles.
