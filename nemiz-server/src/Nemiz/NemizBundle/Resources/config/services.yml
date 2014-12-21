@@ -7,6 +7,7 @@ parameters:
   platform.activity.service.class: Nemiz\NemizBundle\Service\ActivityService  
   
   aws.platform_arn: 'arn:aws:sns:eu-central-1:852012476443:app/GCM/Nemiz'
+  aws.report_arn: 'arn:aws:sns:eu-central-1:852012476443:NemizCrashReport'
   aws.sns.client.class: Aws\Sns\SnsClient
   aws.config:
     key: 'AKIAJKIYLZLEW4ZRXW4A'

@@ -23,6 +23,20 @@ class DefaultController extends Controller {
 	}
 	
 	/**
+	 * @Route("/report")
+	 * @Method("POST")
+	 */
+	public function reportAction(Request $request) {
+		$snsClient = $this->get("aws.sns.service");
+		
+		$arn = $this->container->getParameter('aws.report_arn');
+		$content = $request->getContent();
+		
+		$result = $snsClient->publish(
+			array('TargetArn' => $arn, 'Message' => $content));
+	}
+	
+	/**
 	 * @Route("/register")
 	 * @Method("POST")
 	 */	

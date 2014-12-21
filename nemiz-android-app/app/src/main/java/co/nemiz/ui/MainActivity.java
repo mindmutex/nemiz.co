@@ -18,7 +18,6 @@ import com.facebook.Session;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GooglePlayServicesUtil;
 import com.google.android.gms.gcm.GoogleCloudMessaging;
-import com.loopj.android.http.RequestHandle;
 
 import java.io.IOException;
 import java.util.List;
