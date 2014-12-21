@@ -23,17 +23,9 @@ class FriendshipRepository extends EntityRepository {
 			->from(UserRepository::ENTITY, 'u')
 			->select('u')
 			->where('u = f.friend and f.user = :user')
+			->orderBy('u.name', 'ASC')
 			->setParameter('user', $user)
 			->getQuery()
 			->getResult();
-		
-// 		return $this->cr
-// 			->select('o')
-// 			->leftJoin('f.friend', 'o')
-// 			->where('f.user = :user')
-		
-// 			->setParameter('user', $user)
-// 			->getQuery()
-// 			->getResult();
 	}
 }
