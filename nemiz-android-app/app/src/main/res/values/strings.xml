@@ -39,6 +39,7 @@
     <string name="txt_no_friends">Neviens no taviem draugiem nelieto Nemīz aplikāciju. Iesaki Nemīz saviem Facebook draugiem un tavs draugu loks paplašināsies.</string>
     <string name="txt_no_activity">Pagaidām nav aktivitātes. Esi pirmais! Nosūti draugam Nemīz, uzspiežot uz vārda, draugu sadaļā!</string>
     <string name="txt_share">Pievienojies nemīzējiem, instalējot aplikāciju - http://nemiz.co</string>
+    <string name="txt_poke_sent">Nosūtīts!</string>
 
     <string name="txt_send_1"><![CDATA[Tu motivē <strong>%1$s</strong> ar nelielu nemīz!]]></string>
     <string name="txt_send_2"><![CDATA[Tu uzmundrini <strong>%1$s</strong>! Viss būs labi. Nemīz!]]></string>
