@@ -134,6 +134,8 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
                                 .alpha(1f)
                                 .setDuration(mShortAnimationDuration)
                                 .setListener(null);
+
+                            Toast.makeText(getActivity(), R.string.txt_poke_sent, Toast.LENGTH_SHORT).show();
                         }
                     }.execute();
                 }
