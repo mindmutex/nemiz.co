@@ -373,7 +373,7 @@ public class DefaultRestService {
      */
     private List<User> applyUserFilter(String filter) {
         List<User> filterList = new ArrayList<>();
-        if (filter != null && !filter.isEmpty()) {
+        if (filter != null && !filter.isEmpty() && contactsList != null) {
             for (User contact : contactsList) {
                 if (contact.getName().toLowerCase().contains(filter.toLowerCase())) {
                     filterList.add(contact);

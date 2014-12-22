@@ -73,7 +73,7 @@
                 android:id="@+id/txtPasswordConfirm" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="@string/btn_register"
                 android:id="@+id/btnRegister"
