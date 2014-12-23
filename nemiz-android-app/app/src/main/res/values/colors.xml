@@ -3,6 +3,7 @@
 
     <color name="background">#fff9e270</color>
     <color name="tab_background">#fffff9de</color>
+    <color name="tab_textColor">#ff05243f</color>
     <color name="tab_background_indicator">#fff9e270</color>
 
     <color name="blue">#ff33b5e5</color>
