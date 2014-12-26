@@ -56,6 +56,7 @@ public class NemizApplication extends Application implements Thread.UncaughtExce
                 return null;
             }
         }.execute();
+
         writeToFile(content);
 
         defaultExceptionHandler.uncaughtException(thread, ex);

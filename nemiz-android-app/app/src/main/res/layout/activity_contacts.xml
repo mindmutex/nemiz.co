@@ -13,7 +13,7 @@
         app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
         app:popupTheme="@style/Theme.AppCompat.Light"
         android:minHeight="?attr/actionBarSize"
-        android:background="@color/background"/>
+        android:background="#f4d543"/>
 
     <co.nemiz.ui.view.SlidingTabLayout
         android:id="@+id/sliding_tabs"

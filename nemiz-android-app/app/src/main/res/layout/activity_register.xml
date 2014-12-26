@@ -77,7 +77,10 @@
                 android:layout_height="wrap_content"
                 android:text="@string/btn_register"
                 android:id="@+id/btnRegister"
-                android:layout_gravity="right" />
+                android:layout_marginTop="10dp"
+                android:textColor="@color/form_button_color"
+                android:background="@drawable/form_button"
+                />
         </LinearLayout>
 
         <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"

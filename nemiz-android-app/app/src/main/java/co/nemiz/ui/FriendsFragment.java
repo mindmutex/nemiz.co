@@ -41,7 +41,7 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
 
     @Override
     public void onActivityCreated(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+        super.onActivityCreated(savedInstanceState);
 
         swipeLayout.setOnRefreshListener(this);
         swipeLayout.setColorSchemeResources(R.color.blue, R.color.orange, R.color.red, R.color.green);
@@ -194,10 +194,9 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
         @Override
         public View getView(int position, View convertView, ViewGroup parent) {
             User contact = getItem(position);
-            if (convertView == null) {
-                convertView = LayoutInflater.from(getContext()).inflate(
-                    R.layout.fragment_friends_item, parent, false);
-            }
+            convertView = LayoutInflater.from(getContext()).inflate(
+                R.layout.fragment_friends_item, parent, false);
+
             TextView name = (TextView) convertView.findViewById(R.id.listText);
             name.setText(contact.getName());
 
