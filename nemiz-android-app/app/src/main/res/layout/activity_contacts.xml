@@ -6,14 +6,12 @@
     android:orientation="vertical"
     tools:context=".MainActivity">
 
-    <android.support.v7.widget.Toolbar
+tvt    <android.support.v7.widget.Toolbar
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        style="@style/ToolbarStyle"
         android:id="@+id/toolbar"
-        app:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"
-        app:popupTheme="@style/Theme.AppCompat.Light"
-        android:minHeight="?attr/actionBarSize"
-        android:background="#f4d543"/>
+        android:minHeight="?attr/actionBarSize"/>
 
     <co.nemiz.ui.view.SlidingTabLayout
         android:id="@+id/sliding_tabs"

@@ -3,6 +3,18 @@
     <style name="AppTheme" parent="Theme.AppCompat.Light.NoActionBar">
         <item name="android:windowBackground">@color/default_background</item>
         <item name="android:textColor">@color/default_textColor</item>
+
+    </style>
+
+    <style name="ToolbarTheme" parent="ThemeOverlay.AppCompat.Dark.ActionBar">
+        <item name="popupTheme">@style/Theme.AppCompat.Light</item>
+    </style>
+
+
+    <style name="ToolbarStyle" parent="Widget.AppCompat.Toolbar">
+        <item name="android:background">#f4d543</item>
+        <item name="theme">@style/ToolbarTheme</item>
+        <item name="popupTheme">@style/Theme.AppCompat.Light</item>
     </style>
 
 </resources>

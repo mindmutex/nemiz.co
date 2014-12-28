@@ -78,7 +78,11 @@ public class RegisterActivity extends Activity {
 
         User user = new User();
         user.setUsername(graphUser.getUsername());
-        user.setEmail(graphUser.asMap().get("email").toString());
+
+        Object graphEmail = graphUser.asMap().get("email");
+        if (graphEmail != null) {
+            user.setEmail(graphEmail.toString());
+        }
         user.setName(graphUser.getName());
         user.setFacebook(graphUser.getId());
 
@@ -88,7 +92,13 @@ public class RegisterActivity extends Activity {
         EditText mailEdit = (EditText) findViewById(R.id.txtEmail);
 
         nameEdit.setText(user.getName());
-        mailEdit.setText(user.getEmail());
+
+        if (graphEmail != null) {
+            mailEdit.setText(user.getEmail());
+        } else {
+
+            Toast.makeText(this, R.string.register_failed, Toast.LENGTH_SHORT).show();
+        }
     }
 
     private boolean validateRegister() {

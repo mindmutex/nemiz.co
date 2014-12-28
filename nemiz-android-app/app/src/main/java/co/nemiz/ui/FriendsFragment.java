@@ -49,7 +49,7 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
         emptySwipeLayout.setOnRefreshListener(this);
         emptySwipeLayout.setColorSchemeResources(R.color.blue, R.color.orange, R.color.red, R.color.green);
 
-        adapter = new ContactsListAdapter(getActivity(), R.layout.fragment_friends_item, contactsList);
+        initializeAdapter();
         updateContacts();
 
         setListAdapter(adapter);
@@ -142,12 +142,20 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
             });
     }
 
+    private void initializeAdapter() {
+        adapter = new ContactsListAdapter(getActivity(), R.layout.fragment_friends_item, contactsList);
+    }
+
     private void pokeUser(User user) {
         DefaultRestService service = DefaultRestService.get();
         service.pokeSync(user);
     }
 
     private void updateContacts() {
+        if (adapter == null) {
+            initializeAdapter();
+        }
+
         DefaultRestService service = DefaultRestService.get();
         service.getContacts(filter, new DefaultRestService.Result<List<User>>() {
             @Override
