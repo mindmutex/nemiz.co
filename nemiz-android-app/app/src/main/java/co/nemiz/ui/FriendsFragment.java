@@ -2,6 +2,7 @@ package co.nemiz.ui;
 
 import android.animation.Animator;
 import android.animation.AnimatorListenerAdapter;
+import android.app.Activity;
 import android.content.Context;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -37,6 +38,7 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
     private SwipeRefreshLayout swipeLayout;
     private SwipeRefreshLayout emptySwipeLayout;
 
+    private Activity activity;
     private String filter;
 
     @Override
@@ -96,6 +98,12 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
     }
 
     @Override
+    public void onAttach(Activity activity) {
+        super.onAttach(activity);
+        this.activity = activity;
+    }
+
+    @Override
     public void onListItemClick(ListView listView, final View view, int position, long id) {
         final int mShortAnimationDuration = getResources().getInteger(android.R.integer.config_shortAnimTime);
         final User contact = contactsList.get(position);
@@ -135,7 +143,7 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
                                 .setDuration(mShortAnimationDuration)
                                 .setListener(null);
 
-                            Toast.makeText(getActivity(), R.string.txt_poke_sent, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(activity, R.string.txt_poke_sent, Toast.LENGTH_SHORT).show();
                         }
                     }.execute();
                 }
@@ -143,7 +151,7 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
     }
 
     private void initializeAdapter() {
-        adapter = new ContactsListAdapter(getActivity(), R.layout.fragment_friends_item, contactsList);
+        adapter = new ContactsListAdapter(activity, R.layout.fragment_friends_item, contactsList);
     }
 
     private void pokeUser(User user) {
@@ -166,7 +174,7 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
 
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(getActivity(), R.string.data_failed, Toast.LENGTH_LONG).show();
+                    Toast.makeText(activity, R.string.data_failed, Toast.LENGTH_LONG).show();
                 }
                 clearRefreshing();
             }
