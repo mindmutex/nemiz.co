@@ -142,8 +142,9 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
                                 .alpha(1f)
                                 .setDuration(mShortAnimationDuration)
                                 .setListener(null);
-
-                            Toast.makeText(activity, R.string.txt_poke_sent, Toast.LENGTH_SHORT).show();
+                            if (activity != null) {
+                                Toast.makeText(activity, R.string.txt_poke_sent, Toast.LENGTH_SHORT).show();
+                            }
                         }
                     }.execute();
                 }
@@ -151,7 +152,9 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
     }
 
     private void initializeAdapter() {
-        adapter = new ContactsListAdapter(activity, R.layout.fragment_friends_item, contactsList);
+        if (activity != null) {
+            adapter = new ContactsListAdapter(activity, R.layout.fragment_friends_item, contactsList);
+        }
     }
 
     private void pokeUser(User user) {
@@ -168,13 +171,15 @@ public class FriendsFragment extends android.support.v4.app.ListFragment
         service.getContacts(filter, new DefaultRestService.Result<List<User>>() {
             @Override
             public void handle(int statusCode, List<User> result, String stringResult) {
-                if (result != null) {
+                if (result != null && adapter != null) {
                     contactsList.clear();
                     contactsList.addAll(result);
 
                     adapter.notifyDataSetChanged();
                 } else {
-                    Toast.makeText(activity, R.string.data_failed, Toast.LENGTH_LONG).show();
+                    if (activity != null) {
+                        Toast.makeText(activity, R.string.data_failed, Toast.LENGTH_LONG).show();
+                    }
                 }
                 clearRefreshing();
             }

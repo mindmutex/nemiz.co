@@ -38,7 +38,7 @@ public class MainActivity extends Activity implements DefaultRestService.TokenRe
     /**
      * Obtained from Google API console (linked to ivarsv@gmail.com account)
      */
-    private static final String SENDER_ID = "918488499724";
+    private static final String SENDER_ID = "123";
 
     private Context context;
 
